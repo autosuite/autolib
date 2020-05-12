@@ -6,3 +6,8 @@
 
 HISTORY.md
 .env
+
+# NPM
+
+dist/
+node_modules/
