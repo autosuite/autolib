@@ -1,3 +1,5 @@
+import fs from 'fs';
+
 import * as core from '@actions/core';
 
 /**
@@ -12,8 +14,67 @@ import * as core from '@actions/core';
  */
 const SEMVER_REGEXP: RegExp = /v?(\d)\.(\d)\.\d)(.*)/;
 
+/** A [[RegExp]] to [[string]] replacement map for use on a file. */
+export interface ReplacementMap {
+    /** The regular expression to match and replace. */
+    matcher: RegExp,
+    /** The literal replacement to use to replace the given regular expression. */
+    replacement: string,
+};
+
+/** A basic concrete representation of a Semantic Version. */
+export class SemVer {
+    /** The major version. */
+    major: Number;
+    /** The minor number. */
+    minor: Number;
+    /** THe patch number. */
+    patch: Number;
+    /** The information string, if applicable. */
+    info: string | null;
+
+    constructor(major: Number, minor: Number, patch: Number, info: string | null) {
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.info = info;
+    }
+
+    toString() {
+        return `${this.major}.${this.minor}.${this.patch}${this.info}`;
+    }
+};
+
 /**
- * Given an [[Array]] of tags, find the latest SemVer tag and return it.
+ * Given a file, perform replacements based on the [[ReplacementMap]] and write.
+ *
+ * @param filename the file's name
+ * @param replacements the [[Array]] of [[ReplacementMap]]s
+ */
+export async function rewriteFileContentsWithReplacements(filename: string, replacements: Array<ReplacementMap>) {
+    fs.exists(filename, function (exists: boolean) {
+        if (exists) {
+            /* If the file exists, we can perform the replacement by reading from the file first: */
+
+            fs.readFile(filename, (_, data: Buffer) => {
+                let replaced: string = data.toString();
+
+                replacements.forEach(replaceMap => {
+                    replaced = replaced.replace(replaceMap.matcher, replaceMap.replacement);
+                })
+
+                fs.writeFile(filename, replaced, (_) => null);
+            });
+        } else {
+            /* If the file does not exist, we produce a warning and stop. */
+
+            core.warning(`Cannot perform replace-rewrite of file that does not exist: ${filename}.`);
+        }
+    });
+}
+
+/**
+ * Given [[string]] of newline-delimited tags, find the latest SemVer tag and return it.
  *
  * We need to iterate all anyway to ignore all the useless values, so let's not define a comparator.
  *
@@ -23,12 +84,10 @@ const SEMVER_REGEXP: RegExp = /v?(\d)\.(\d)\.\d)(.*)/;
  * @param stableOnly if the function should ignore all prerelease/build info-appended versions
  * @returns a SemVer representation as a 4-ary [[Tuple]] of 3 [[Number]]s and 1 optional [[string]]
  */
-export function determineLatestSemanticVersion(
-    tags: string, stableOnly: boolean
-): [Number, Number, Number, string | null] {
-    let largestSeen: [Number, Number, Number, string | null] = [0, 0, 0, null];
+export async function findLatestSemVerUsingString(tags: string, stableOnly: boolean): Promise<SemVer> {
+    let largestSeen: SemVer = new SemVer(0, 0, 0, null);
 
-    tags.split("\n").forEach((tag: string) => {
+    tags.split("\n").forEach(async (tag: string) => {
         core.info(`Found tag: [${tag}].`);
 
         const match: RegExpMatchArray | null = tag.match(SEMVER_REGEXP);
@@ -51,7 +110,7 @@ export function determineLatestSemanticVersion(
             return;
         }
 
-        largestSeen = determineLargestSeen(largestSeen, major, minor, patch, info);
+        largestSeen = await compareSemVer(largestSeen, new SemVer(major, minor, patch, info));
     });
 
     return largestSeen;
@@ -60,39 +119,30 @@ export function determineLatestSemanticVersion(
 /**
  * Determine the largest seen Semantic Version.
  *
+ * TODO: Look up ways to make SemVer generically comparable.
+ *
  * @param largestSeen the largest seen (so far) version
- * @param major the major version to compare
- * @param minor the minor version to compare
- * @param patch the patch version to compare
- * @param info the info string, if applicable, to compare
+ * @param current the current version to compare
  */
-function determineLargestSeen(
-    largestSeen: [Number, Number, Number, string | null],
-    major: Number,
-    minor: Number,
-    patch: Number,
-    info: string | null,
-): [Number, Number, Number, string | null] {
-    /* Record singular comparisons. */
+async function compareSemVer(largestSeen: SemVer, current: SemVer): Promise<SemVer> {
+    const majorIsSame: boolean = current.major == largestSeen.major;
+    const majorIsNewer: boolean = current.major > largestSeen.major;
 
-    const majorIsSame: boolean = major == largestSeen[0];
-    const majorIsNewer: boolean = major > largestSeen[0];
+    const minorIsSame: boolean = current.minor == largestSeen.minor;
+    const minorIsNewer: boolean = current.minor > largestSeen.minor;
 
-    const minorIsSame: boolean = minor == largestSeen[1];
-    const minorIsNewer: boolean = minor > largestSeen[1];
+    const patchIsSame: boolean = current.patch == largestSeen.patch;
+    const patchIsNewer: boolean = current.patch > largestSeen.patch;
 
-    const patchIsSame: boolean = patch == largestSeen[2];
-    const patchIsNewer: boolean = patch > largestSeen[2];
-
-    const infoExisted: boolean = largestSeen[3] != null;
+    const infoExisted: boolean = largestSeen.info != null;
     const infoLexicallyGreater: boolean = (
-        info != null && largestSeen[3] != null && info.localeCompare(largestSeen[3]) == 1
+        current.info != null && largestSeen.info != null && current.info.localeCompare(largestSeen.info) == 1
     );
 
     if (majorIsNewer) {
         /* A bigger major number is found. */
 
-        return [major, minor, patch, info];
+        return current;
     } else if (majorIsSame) {
         /* Minor is the same and the patch is greater. */
 
@@ -100,10 +150,10 @@ function determineLargestSeen(
 
         /* The SemVer string is the same but there is no new extra info. */
 
-        const stableVersionIncrement: boolean = minorIsSame && patchIsSame && !info && infoExisted;
+        const stableVersionIncrement: boolean = minorIsSame && patchIsSame && !current.info && infoExisted;
 
         if (minorIsNewer || patchVersionIncrement || stableVersionIncrement || infoLexicallyGreater) {
-            return [major, minor, patch, info];
+            return current;
         }
     }
 
