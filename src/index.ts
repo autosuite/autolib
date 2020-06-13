@@ -1,6 +1,13 @@
 import fs from 'fs';
 
 import * as core from '@actions/core';
+import * as exec from '@actions/exec';
+
+/*
+ * -------------------------------------------------------------------------------------------------------------------
+ * - Constants. ------------------------------------------------------------------------------------------------------
+ * -------------------------------------------------------------------------------------------------------------------
+ */
 
 /**
  * The regular expression that represents a version release.
@@ -13,6 +20,12 @@ import * as core from '@actions/core';
  * - `3`: `-beta+17-2020-05-12`
  */
 const SEMVER_REGEXP: RegExp = /v?(\d)\.(\d)\.\d)(.*)/;
+
+/*
+ * -------------------------------------------------------------------------------------------------------------------
+ * - Classes. --------------------------------------------------------------------------------------------------------
+ * -------------------------------------------------------------------------------------------------------------------
+ */
 
 /** A [[RegExp]] to [[string]] replacement map for use on a file. */
 export class ReplacementMap {
@@ -50,6 +63,12 @@ export class SemVer {
         return `${this.major}.${this.minor}.${this.patch}${this.info}`;
     }
 };
+
+/*
+ * -------------------------------------------------------------------------------------------------------------------
+ * - Utilities. ------------------------------------------------------------------------------------------------------
+ * -------------------------------------------------------------------------------------------------------------------
+ */
 
 /**
  * Given a file, perform replacements based on the [[ReplacementMap]] and write.
@@ -130,7 +149,7 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
  * @param largestSeen the largest seen (so far) version
  * @param current the current version to compare
  */
-async function compareSemVer(largestSeen: SemVer, current: SemVer): Promise<SemVer> {
+export async function compareSemVer(largestSeen: SemVer, current: SemVer): Promise<SemVer> {
     const majorIsSame: boolean = current.major == largestSeen.major;
     const majorIsNewer: boolean = current.major > largestSeen.major;
 
@@ -164,4 +183,34 @@ async function compareSemVer(largestSeen: SemVer, current: SemVer): Promise<SemV
     }
 
     return largestSeen;
+}
+
+/**
+ * Using `git` tags, find the latest version (if this is possible).
+ *
+ * If no version is found, just return 0.0.0 with no info associated.
+ *
+ * @param stableOnly whether we should only extract stable versions
+ */
+export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise<SemVer> {
+    let text: SemVer | null = null;
+
+    try {
+        await exec.exec('git fetch --tags');
+        await exec.exec('git tag', [], {
+            listeners: {
+                stdout: async (data: Buffer) => {
+                    text = await findLatestSemVerUsingString(data.toString(), stableOnly);
+                }
+            }
+        });
+    } catch {
+        core.warning("Complaint git tag cannot be found. Returning 0.0.0.");
+    }
+
+    if (!text) {
+        return new SemVer(0, 0, 0, null);
+    }
+
+    return text;
 }
