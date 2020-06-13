@@ -10,9 +10,9 @@ jobs:
         with:
           fetch-depth: 0
       - run: git pull --rebase || echo "You are pushing a tag, not a branch."
-      - uses: autosuite/autobadge@0.1.0
+      - uses: autosuite/autobadge@master
       - uses: autosuite/autoversion@master
-      - uses: autosuite/autolog@0.2.0
+      - uses: autosuite/autolog@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-repository: ${{ github.repository }}

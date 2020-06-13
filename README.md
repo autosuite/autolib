@@ -1,40 +1,25 @@
 # Autolib
 
-| Summary           | Badge                                              |
-| ----------------- | -------------------------------------------------- |
-| Release Stability | ![Autobadge Release Stability][release-stability] |
-| Latest Release    | ![Autobadge Latest Release][latest-release]       |
-| Code Quality      | [![Maintainability][quality-image]][quality-link]  |
-| Code Coverage     | [![Test Coverage][coverage-image]][coverage-link]  |
+![Autobadge Stable Release][stable-release]
+![Autobadge Development Release][development-release]
+[![Maintainability][quality-image]][quality-link]
+[![Test Coverage][coverage-image]][coverage-link]
 
-[release-stability]: https://img.shields.io/static/v1?label=latest&message=0.0.0&color=purple
-[latest-release]: https://img.shields.io/static/v1?label=stability&message=unusable&color=red
-[quality-image]: https://api.codeclimate.com/v1/badges/8887e847856049d78bfc/maintainability
-[quality-link]: https://codeclimate.com/github/teaminkling/base/maintainability
-[coverage-image]: https://api.codeclimate.com/v1/badges/8887e847856049d78bfc/test_coverage
-[coverage-link]: https://codeclimate.com/github/teaminkling/base/test_coverage
+[stable-release]: https://img.shields.io/static/v1?label=stable&message=v0.1.1&color=blue
+[development-release]: https://img.shields.io/static/v1?label=in-dev&message=v0.1.1&color=red
+[quality-image]: https://api.codeclimate.com/v1/badges/da08614d5b656593b729/maintainability
+[quality-link]: https://codeclimate.com/github/autosuite/autolib/maintainability
+[coverage-image]: https://api.codeclimate.com/v1/badges/da08614d5b656593b729/test_coverage
+[coverage-link]: https://codeclimate.com/github/autosuite/autolib/test_coverage
 
 ## Introduction
 
-Base template for all repositories without a better template.
+This is a library containing SemVer, GitHub Actions, and `git` utilities related to the
+[Autosuite](https://github.com/autosuite) project.
 
-## Rationale
+## Documentation
 
-> See the [features document](FEATURES.md) for more specific information about the purpose of this software.
+If you would like to contribute to this project, please read our [contributors documentation](CONTRIBUTING.md) and
+our [code of conduct](CODE_OF_CONDUCT.md).
 
-Describe the "why" of your GitHub project here.
-
-## Build Instructions
-
-Describe exactly how to build this project from scratch. Keep in mind platform-specific instructions.
-
-## Deploy
-
-Describe at least how _you_ are deploying this project so you can do it again.
-
-## To-Do
-
-- [ ] **Check the license!**
-- [ ] Finish/edit this README file.
-- [ ] Familiarise yourself with [Inkling Flow](https://github.com/teaminkling/inkling-flow).
-- [ ] Add/edit any and all badges associated with this project.
+The license we use for this project is defined in [the license file](LICENSE).
