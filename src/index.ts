@@ -44,15 +44,15 @@ export class ReplacementMap {
 /** A basic concrete representation of a Semantic Version. */
 export class SemVer {
     /** The major version. */
-    major: Number;
+    major: number;
     /** The minor number. */
-    minor: Number;
-    /** THe patch number. */
-    patch: Number;
+    minor: number;
+    /** The patch number. */
+    patch: number;
     /** The information string, if applicable. */
     info: string | null;
 
-    constructor(major: Number, minor: Number, patch: Number, info: string | null) {
+    constructor(major: number, minor: number, patch: number, info: string | null) {
         this.major = major;
         this.minor = minor;
         this.patch = patch;
@@ -107,7 +107,7 @@ export async function rewriteFileContentsWithReplacements(filename: string, repl
  *
  * @param tags the tags from which to find the latest SemVer version
  * @param stableOnly if the function should ignore all prerelease/build info-appended versions
- * @returns a SemVer representation as a 4-ary [[Tuple]] of 3 [[Number]]s and 1 optional [[string]]
+ * @returns a SemVer representation as a 4-ary [[Tuple]] of 3 [[number]]s and 1 optional [[string]]
  */
 export async function findLatestSemVerUsingString(tags: string, stableOnly: boolean): Promise<SemVer> {
     let largestSeen: SemVer = new SemVer(0, 0, 0, null);
@@ -121,9 +121,9 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
             return;
         }
 
-        const major: Number = parseInt(match[0]);
-        const minor: Number = parseInt(match[1]);
-        const patch: Number = parseInt(match[2]);
+        const major: number = parseInt(match[0]);
+        const minor: number = parseInt(match[1]);
+        const patch: number = parseInt(match[2]);
 
         /* Force set to null if falsey (empty string). */
 
