@@ -19,7 +19,7 @@ import * as exec from '@actions/exec';
  * - `2`: `5`
  * - `3`: `-beta+17-2020-05-12`
  */
-const SEMVER_REGEXP: RegExp = /v?(\d)\.(\d)\.\d)(.*)/;
+export const SEMVER_REGEXP: RegExp = /v?(\d)\.(\d)\.\d)(.*)/;
 
 /*
  * -------------------------------------------------------------------------------------------------------------------
@@ -59,6 +59,45 @@ export class SemVer {
         this.info = info;
     }
 
+    /**
+     * From a textual version, create a [SemVer].
+     *
+     * These might be something like `0.31.5` or `2.0.0-some_info_here+2020-03-01`, for example.
+     *
+     * @param text the textual version
+     */
+    static constructFromText(text: string): SemVer {
+        const match: RegExpMatchArray | null = text.match(SEMVER_REGEXP);
+
+        if (!match) {
+            throw Error(`Provided text is not valid SemVer: [${text}]`);
+        }
+
+        const major: number = parseInt(match[0]);
+        const minor: number = parseInt(match[1]);
+        const patch: number = parseInt(match[2]);
+
+        /* Force set to null if falsey (empty string). */
+
+        const info: string | null = match[3] || null;
+
+        return new SemVer(major, minor, patch, info);
+    }
+
+    /**
+     * Return the "zero version" as a [SemVer].
+     */
+    static constructZero(): SemVer {
+        return new SemVer(0, 0, 0, null);
+    }
+
+    /**
+     * Return "true" if this is a "zero version".
+     */
+    isZero() {
+        return (this.major === 0 && this.minor === 0 && this.patch === 0 && this.info == null)
+    }
+
     toString() {
         return `${this.major}.${this.minor}.${this.patch}${this.info}`;
     }
@@ -71,12 +110,14 @@ export class SemVer {
  */
 
 /**
- * Given a file, perform replacements based on the [[ReplacementMap]] and write.
+ * Given a file, perform replacements based on the [ReplacementMap] and write.
  *
  * @param filename the file's name
- * @param replacements the [[Array]] of [[ReplacementMap]]s
+ * @param replacements the [Array] of [ReplacementMap]s
  */
-export async function rewriteFileContentsWithReplacements(filename: string, replacements: Array<ReplacementMap>) {
+export async function rewriteFileContentsWithReplacements(
+    filename: string, replacements: Array<ReplacementMap>
+): Promise<void> {
     fs.exists(filename, function (exists: boolean) {
         if (exists) {
             /* If the file exists, we can perform the replacement by reading from the file first: */
@@ -99,6 +140,19 @@ export async function rewriteFileContentsWithReplacements(filename: string, repl
 }
 
 /**
+ * Given a file, perform a single replacement based on the matcher and replacement.
+ *
+ * @param filename the file's name
+ * @param matcher the matcher [RegExp]
+ * @param replacement the replacement [string]
+ */
+export async function rewriteFileContentsWithReplacement(
+    filename: string, matcher: RegExp, replacement: string
+): Promise<void> {
+    await rewriteFileContentsWithReplacements(filename, [new ReplacementMap(matcher, replacement)]);
+}
+
+/**
  * Given [[string]] of newline-delimited tags, find the latest SemVer tag and return it.
  *
  * We need to iterate all anyway to ignore all the useless values, so let's not define a comparator.
@@ -115,27 +169,19 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
     tags.split("\n").forEach(async (tag: string) => {
         core.info(`Found tag: [${tag}].`);
 
-        const match: RegExpMatchArray | null = tag.match(SEMVER_REGEXP);
+        try {
+            const candidate: SemVer = SemVer.constructFromText(tag);
 
-        if (!match) {
+            /* Skip if not stable and stableOnly is true. */
+
+            if (stableOnly && candidate.info) {
+                return;
+            }
+
+            largestSeen = await compareSemVer(largestSeen, candidate);
+        } catch {
             return;
         }
-
-        const major: number = parseInt(match[0]);
-        const minor: number = parseInt(match[1]);
-        const patch: number = parseInt(match[2]);
-
-        /* Force set to null if falsey (empty string). */
-
-        const info: string | null = match[3] || null;
-
-        /* Skip if not stable and stableOnly is true. */
-
-        if (stableOnly && info) {
-            return;
-        }
-
-        largestSeen = await compareSemVer(largestSeen, new SemVer(major, minor, patch, info));
     });
 
     return largestSeen;
@@ -209,7 +255,7 @@ export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise
     }
 
     if (!text) {
-        return new SemVer(0, 0, 0, null);
+        return SemVer.constructZero();
     }
 
     return text;
