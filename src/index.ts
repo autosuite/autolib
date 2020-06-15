@@ -155,7 +155,7 @@ export async function rewriteFileContentsWithReplacements(
 export async function rewriteFileContentsWithReplacement(
     filename: string, matcher: RegExp, replacement: string
 ): Promise<void> {
-    await rewriteFileContentsWithReplacements(filename, [new ReplacementMap(matcher, replacement)]);
+    rewriteFileContentsWithReplacements(filename, [new ReplacementMap(matcher, replacement)]);
 }
 
 /**

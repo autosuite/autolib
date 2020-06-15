@@ -1,11 +1,11 @@
-name: Automate Issue Quality and Branch Creation (autosuite)
+name: Automate Issue Quality and Branch Creation (autosuite).
 
 on:
   issues:
     types: [assigned]
 
 jobs:
-  test:
+  autoissue:
     runs-on: ubuntu-latest
     steps:
       - uses: autosuite/autobranch@master
