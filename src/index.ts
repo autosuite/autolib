@@ -140,7 +140,7 @@ export async function rewriteFileContentsWithReplacements(
         } else {
             /* If the file does not exist, we produce a warning and stop. */
 
-            core.warning(`Cannot perform replace-rewrite of file that does not exist: ${filename}.`);
+            core.warning(`[Autolib] Cannot perform replace-rewrite of file that does not exist: ${filename}.`);
         }
     });
 }
@@ -172,8 +172,8 @@ export async function rewriteFileContentsWithReplacement(
 export async function findLatestSemVerUsingString(tags: string, stableOnly: boolean): Promise<SemVer> {
     let largestSeen: SemVer = new SemVer(0, 0, 0, null);
 
-    tags.split("\n").forEach(async (tag: string) => {
-        core.info(`Found tag: [${tag}].`);
+    tags.trim().split("\n").forEach(async (tag: string) => {
+        core.info(`[Autolib] Found tag: [${tag}].`);
 
         try {
             const candidate: SemVer = SemVer.constructFromText(tag);
@@ -257,7 +257,7 @@ export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise
             }
         });
     } catch {
-        core.warning("Complaint git tag cannot be found. Returning 0.0.0.");
+        core.warning("[Autolib] Compliant git tag cannot be found. Returning 0.0.0.");
     }
 
     if (!text) {
