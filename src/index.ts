@@ -173,10 +173,18 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
     let largestSeen: SemVer = new SemVer(0, 0, 0, null);
 
     tags.trim().split("\n").forEach(async (tag: string) => {
+        if (!tag.trim()) {
+            /* Silently ignore empty or whitespace-only tags. */
+
+            return;
+        }
+
         core.info(`[Autolib] Found tag: [${tag}].`);
 
         try {
             const candidate: SemVer = SemVer.constructFromText(tag);
+
+            core.info(`[Autolib] [${tag}] has been parsed as: [${candidate}].`);
 
             /* Skip if not stable and stableOnly is true. */
 
@@ -186,6 +194,8 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
 
             largestSeen = await compareSemVer(largestSeen, candidate);
         } catch {
+            core.info(`[Autolib] Tag was not parsed as SemVer: [${tag}].`);
+
             return;
         }
     });
