@@ -22,7 +22,8 @@ This is a library containing SemVer, GitHub Actions, and `git` utilities related
 
 ## Documentation
 
-> No documentation yet exists for this project. This may be rectified with a request in the future.
+> No documentation yet exists for this project. This may be rectified with a request in the future. Also,
+> coverage is currently broken: this is being worked on now.
 
 If you would like to contribute to this project, please read our [contributors documentation](CONTRIBUTING.md) and
 our [code of conduct](CODE_OF_CONDUCT.md).
