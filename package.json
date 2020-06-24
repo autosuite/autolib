@@ -4,7 +4,10 @@
   "description": "Commons library for various configuration management GitHub Actions.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "scripts": {},
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/autosuite/autolib.git"
@@ -25,8 +28,12 @@
     "@actions/exec": "^1.0.2"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.2",
+    "@types/jest-each": "^24.3.0",
     "@types/node": "^13.1.5",
     "jest": "^26.1.0",
+    "jest-each": "^26.1.0",
+    "ts-jest": "^26.1.1",
     "typescript": "^3.7.4"
   }
 }
