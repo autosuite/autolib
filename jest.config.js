@@ -1,12 +1,11 @@
 module.exports = {
-    "roots": [
-        "<rootDir>/src",
+    "testPathIgnorePatterns": [
+        "/node_modules/",
+        "/dist/",
     ],
-    "testMatch": [
-        "**/__tests__/**/*.+(ts|tsx|js)",
-        "**/?(*.)+(spec|test).+(ts|tsx|js)",
-    ],
+    "testRegex": "(/src/__tests__/.*|(\\.|/)(test|spec))\\.([jt]sx?)$",
     "transform": {
-        "^.+\\.(ts|tsx)$": "ts-jest",
+        "^.+\\.ts?$": "ts-jest",
     },
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json", "node"],
 };
