@@ -1,11 +1,11 @@
 {
   "name": "@teaminkling/autolib",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Commons library for various configuration management GitHub Actions.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "mocha -r ts-node/register src/__test__/*test*.ts",
+    "test": "mocha -r ts-node/register **/*.test.ts",
     "coverage": "nyc nyc --reporter=json npm test",
     "build": "tsc"
   },
