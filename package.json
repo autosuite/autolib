@@ -6,8 +6,9 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "mocha -r ts-node/register **/*.test.ts",
-    "coverage": "nyc nyc --reporter=json npm test",
-    "build": "tsc"
+    "coverage": "nyc nyc --reporter=lcov npm test",
+    "doc": "typedoc --out docs src",
+    "build": "npm install && tsc && npm run doc"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "mocha": "^8.0.1",
     "nyc": "^15.1.0",
     "ts-node": "^8.10.2",
+    "typedoc": "^0.17.7",
     "typescript": "^3.7.4"
   }
 }
