@@ -1,6 +1,6 @@
 {
   "name": "@teaminkling/autolib",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Commons library for various configuration management GitHub Actions.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
