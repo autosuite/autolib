@@ -14,18 +14,18 @@ import { SemVer } from './types/SemVer';
  * @param replacements the [Array] of [ReplacementMap]s
  */
 export async function rewriteFileContentsWithReplacements(
-    filename: string, replacements: Array<ReplacementMap>,
+    filename: string, replacements: ReplacementMap[],
 ): Promise<void> {
-    fs.exists(filename, function (exists: boolean) {
+    fs.exists(filename, (exists: boolean) => {
         if (exists) {
             /* If the file exists, we can perform the replacement by reading from the file first: */
 
             fs.readFile(filename, (_, data: Buffer) => {
                 let replaced: string = data.toString();
 
-                replacements.forEach(replaceMap => {
+                replacements.forEach((replaceMap: ReplacementMap) => {
                     replaced = replaced.replace(replaceMap.matcher, replaceMap.replacement);
-                })
+                });
 
                 fs.writeFile(filename, replaced, () => null);
             });
@@ -62,43 +62,23 @@ export async function rewriteFileContentsWithReplacement(
  * @returns a SemVer representation as a 4-ary [Tuple] of 3 [number]s and 1 optional [string]
  */
 export async function findLatestSemVerUsingString(text: string, stableOnly: boolean): Promise<SemVer> {
-    const versionsInText: SemVer[] = text.trim().split("\n")
+    const versionsInText: SemVer[] = text.trim().split('\n')
         /* Remove surrounding whitespace from all tags. */
 
-        .map(tag => tag.trim())
+        .map((tag: string) => tag.trim())
 
         /* Convert into SemVer or zeroed "invalid" version. */
 
-        .map(tag => {
-            try {
-                const candidate: SemVer = SemVer.constructFromText(tag);
-
-                if (stableOnly && candidate.info) {
-                    /* If in "stable-only" mode, versions with info strings are invalid. */
-
-                    core.info(`[Autolib] [Parse] ${tag} is valid SemVer but it's not stable and this is stable mode.`);
-
-                    return SemVer.constructZero();
-                }
-
-                core.info(`[Autolib] [Parse] ${tag} is valid SemVer! Nice.`);
-
-                return candidate;
-            } catch {
-                core.info(`[Autolib] [Parse] ${tag} is invalid SemVer.`);
-
-                return SemVer.constructZero();
-            }
-        })
+        .map((tag: string) => parseSemverString(tag, stableOnly))
 
         /* Filter out "zeroed" versions. */
 
-        .filter(tag => !tag.isZero());
+        .filter((tag: SemVer) => !tag.isZero());
 
     const max: SemVer = SemVer.max(versionsInText);
 
     core.info(
-        `[Autolib] [Result] Of versions: [${versionsInText.join(", ")}], the ${stableOnly ? "stable max" : "max"} ` +
+        `[Autolib] [Result] Of versions: [${versionsInText.join(', ')}], the ${stableOnly ? 'stable max' : 'max'} ` +
         `was found to be: [${max}].`
     );
 
@@ -126,7 +106,7 @@ export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise
             }
         });
     } catch {
-        core.warning("[Autolib] Compliant git tag cannot be found. Returning 0.0.0.");
+        core.warning('[Autolib] Compliant git tag cannot be found. Returning 0.0.0.');
     }
 
     if (!text) {
@@ -134,4 +114,32 @@ export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise
     }
 
     return text;
+}
+
+
+/**
+ * Parse a string into a [[SemVer]].
+ *
+ * @param tag the potential tag to be parsed
+ * @param stableOnly whether or not only stable versions should be considered
+ */
+function parseSemverString(tag: string, stableOnly: boolean): SemVer {
+    try {
+        const candidate: SemVer = SemVer.constructFromText(tag);
+
+        if (stableOnly && candidate.info) {
+            /* If in "stable-only" mode, versions with info strings are invalid. */
+
+            core.info(`[Autolib] [Parse] ${tag} is valid SemVer but it's not stable and this is stable mode.`);
+
+            return SemVer.constructZero();
+        }
+        core.info(`[Autolib] [Parse] ${tag} is valid SemVer! Nice.`);
+
+        return candidate;
+    } catch {
+        core.info(`[Autolib] [Parse] ${tag} is invalid SemVer.`);
+
+        return SemVer.constructZero();
+    }
 }

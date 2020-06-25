@@ -59,17 +59,17 @@ export class SemVer {
 
         const groups: { [key: string]: string } | undefined = match.groups;
 
-        if (!groups) {
-            throw Error("Text has no line-delimited trimmed SemVer versions!");
+        if (groups === undefined) {
+            throw Error('Text has no line-delimited trimmed SemVer versions!');
         }
 
-        const major: number = parseInt(groups["major"]);
-        const minor: number = parseInt(groups["minor"]);
-        const patch: number = parseInt(groups["patch"]);
+        const major: number = parseInt(groups.major, 10);
+        const minor: number = parseInt(groups.minor, 10);
+        const patch: number = parseInt(groups.patch, 10);
 
         /* Force set to null if falsey (empty string). */
 
-        const info: string | null = groups["info"] || null;
+        const info: string | null = groups.info || null;
 
         return new SemVer(major, minor, patch, info);
     }
@@ -90,7 +90,7 @@ export class SemVer {
         let runningMax: SemVer = SemVer.constructZero();
 
         if (versions.length === 0) {
-            core.warning("[Autolib] Running SemVer.max with an empty array. Returning 0.0.0.");
+            core.warning('[Autolib] Running SemVer.max with an empty array. Returning 0.0.0.');
         }
 
         versions.forEach(version => {
@@ -107,18 +107,18 @@ export class SemVer {
      * @param right a [[SemVer]]
      */
     private static compare(left: SemVer, right: SemVer): SemVer {
-        const majorIsSame: boolean = left.major == right.major;
+        const majorIsSame: boolean = left.major === right.major;
         const majorIsLeft: boolean = left.major > right.major;
 
-        const minorIsSame: boolean = left.minor == right.minor;
+        const minorIsSame: boolean = left.minor === right.minor;
         const minorIsLeft: boolean = left.minor > right.minor;
 
-        const patchIsSame: boolean = left.patch == right.patch;
+        const patchIsSame: boolean = left.patch === right.patch;
         const patchIsLeft: boolean = left.patch > right.patch;
 
         /* Is minor greater? */
 
-        const minorIncremented: boolean = majorIsSame && minorIsLeft
+        const minorIncremented: boolean = majorIsSame && minorIsLeft;
 
         /* Is minor the same and the left patch is greater? */
 
