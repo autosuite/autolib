@@ -90,6 +90,19 @@ describe("findLatestSemVerUsingString (nominal)", () => {
             "expectedPatch": 1,
             "expectedInfo": null,
         },
+
+        /* Checking to make sure that if everything is invalid, 0.0.0 will be returned. */
+
+        {
+            "lines": [
+                "\r0.asd.1\n", "123!!!.5.10-!@#\n  ", "\t#@.!.@#-rc51\n", "  \n\n 1", "\ninvalid ", " 123abc \r\n ",
+            ],
+            "stable": false,
+            "expectedMajor": 0,
+            "expectedMinor": 0,
+            "expectedPatch": 0,
+            "expectedInfo": null,
+        },
     ];
 
     parameters.forEach(group => it(

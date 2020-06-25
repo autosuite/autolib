@@ -10,4 +10,4 @@ export class ReplacementMap {
         this.matcher = matcher;
         this.replacement = replacement;
     }
-};
+}

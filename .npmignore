@@ -1,6 +1,7 @@
 .github/
 coverage
 .nyc_output
+.eslintrc.js
 .github_changelog_generator
 .gitignore
 CODE_OF_CONDUCT.md

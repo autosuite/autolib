@@ -10,7 +10,7 @@ import * as core from '@actions/core';
  * - `2`: `5`
  * - `3`: `-beta+17-2020-05-12`
  */
-export const SEMVER_REGEXP: RegExp = /v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<info>.*)/;
+export const SEMVER_REGEXP = /v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<info>.*)/;
 
 
 /** A basic concrete representation of a Semantic Version. */
@@ -57,7 +57,11 @@ export class SemVer {
             throw Error(`Provided text is not valid SemVer: [${text}]`);
         }
 
-        const groups: { [key: string]: string } = match.groups!;
+        const groups: { [key: string]: string } | undefined = match.groups;
+
+        if (!groups) {
+            throw Error("Text has no line-delimited trimmed SemVer versions!");
+        }
 
         const major: number = parseInt(groups["major"]);
         const minor: number = parseInt(groups["minor"]);
@@ -149,12 +153,12 @@ export class SemVer {
     /**
      * Return "true" if this is a "zero version".
      */
-    public isZero() {
-        return (this.major === 0 && this.minor === 0 && this.patch === 0 && this.info == null)
+    public isZero(): boolean {
+        return (this.major === 0 && this.minor === 0 && this.patch === 0 && this.info == null);
     }
 
-    public toString() {
-        let representation: string = `${this.major}.${this.minor}.${this.patch}`;
+    public toString(): string {
+        const representation = `${this.major}.${this.minor}.${this.patch}`;
 
         if (this.info) {
             return `${representation}${this.info}`;
@@ -162,4 +166,4 @@ export class SemVer {
 
         return representation;
     }
-};
+}
