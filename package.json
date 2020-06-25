@@ -5,8 +5,8 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
-    "coverage": "jest --coverage",
+    "test": "mocha -r ts-node/register src/__test__/*test*.ts",
+    "coverage": "nyc nyc --reporter=json npm test",
     "build": "tsc"
   },
   "repository": {
@@ -29,12 +29,12 @@
     "@actions/exec": "^1.0.2"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.2",
-    "@types/jest-each": "^24.3.0",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
     "@types/node": "^13.1.5",
-    "jest": "^26.1.0",
-    "jest-each": "^26.1.0",
-    "ts-jest": "^26.1.1",
+    "chai": "^4.2.0",
+    "mocha": "^8.0.1",
+    "nyc": "^15.1.0",
     "ts-node": "^8.10.2",
     "typescript": "^3.7.4"
   }

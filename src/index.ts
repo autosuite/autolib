@@ -174,8 +174,8 @@ export async function rewriteFileContentsWithReplacement(
 export async function findLatestSemVerUsingString(tags: string, stableOnly: boolean): Promise<SemVer> {
     let largestSeen: SemVer = new SemVer(0, 0, 0, null);
 
-    tags.trim().split("\n").forEach(async (tag: string) => {
-        if (!tag.trim()) {
+    tags.split("\n").map(tag => tag.trim()).forEach(async (tag: string) => {
+        if (!tag) {
             /* Silently ignore empty or whitespace-only tags. */
 
             return;
@@ -186,13 +186,15 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
         try {
             const candidate: SemVer = SemVer.constructFromText(tag);
 
-            core.info(`[Autolib] [${tag}] has been parsed as: [${candidate}].`);
-
             /* Skip if not stable and stableOnly is true. */
 
             if (stableOnly && candidate.info) {
+                core.info(`[Autolib] Tag was parsed as SemVer, but it is unstable: [${tag}].`);
+
                 return;
             }
+
+            core.info(`[Autolib] [${tag}] has been parsed as: [${candidate}].`);
 
             largestSeen = await compareSemVer(largestSeen, candidate);
         } catch {
@@ -201,6 +203,8 @@ export async function findLatestSemVerUsingString(tags: string, stableOnly: bool
             return;
         }
     });
+
+    core.info(`[Autolib] Latest tag found is: [${largestSeen}].`);
 
     return largestSeen;
 }
