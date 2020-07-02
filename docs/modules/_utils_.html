@@ -75,6 +75,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#findlatestsemverusingstring" class="tsd-kind-icon">find<wbr>Latest<wbr>Sem<wbr>Ver<wbr>Using<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#findlatestversionfromgittags" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_utils_.html#parsesemverstring" class="tsd-kind-icon">parse<wbr>Semver<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#rewritefilecontentswithreplacement" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacement</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#rewritefilecontentswithreplacements" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacements</a></li>
 							</ul>
@@ -94,7 +95,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/afd2dc5/src/utils.ts#L64">utils.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/a30cb87/src/utils.ts#L64">utils.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -133,7 +134,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/afd2dc5/src/utils.ts#L116">utils.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/a30cb87/src/utils.ts#L96">utils.ts:96</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -155,6 +156,43 @@
 						</li>
 					</ul>
 				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+					<a name="parsesemverstring" class="tsd-anchor"></a>
+					<h3>parse<wbr>Semver<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<li class="tsd-signature tsd-kind-icon">parse<wbr>Semver<wbr>String<span class="tsd-signature-symbol">(</span>tag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/a30cb87/src/utils.ts#L126">utils.ts:126</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Parse a string into a <a href="../classes/_types_semver_.semver.html">SemVer</a>.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>tag: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>the potential tag to be parsed</p>
+									</div>
+								</li>
+								<li>
+									<h5>stableOnly: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>whether or not only stable versions should be considered</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="rewritefilecontentswithreplacement" class="tsd-anchor"></a>
 					<h3>rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacement</h3>
@@ -165,7 +203,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/afd2dc5/src/utils.ts#L48">utils.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/a30cb87/src/utils.ts#L48">utils.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -202,13 +240,13 @@
 					<a name="rewritefilecontentswithreplacements" class="tsd-anchor"></a>
 					<h3>rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacements</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacements<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, replacements<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_replacementmap_.replacementmap.html" class="tsd-signature-type">ReplacementMap</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacements<span class="tsd-signature-symbol">(</span>filename<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, replacements<span class="tsd-signature-symbol">: </span><a href="../classes/_types_replacementmap_.replacementmap.html" class="tsd-signature-type">ReplacementMap</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/afd2dc5/src/utils.ts#L16">utils.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/a30cb87/src/utils.ts#L16">utils.ts:16</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -225,7 +263,7 @@
 									</div>
 								</li>
 								<li>
-									<h5>replacements: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_replacementmap_.replacementmap.html" class="tsd-signature-type">ReplacementMap</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>replacements: <a href="../classes/_types_replacementmap_.replacementmap.html" class="tsd-signature-type">ReplacementMap</a><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>the [Array] of [ReplacementMap]s</p>
 									</div>
@@ -242,9 +280,6 @@
 				<ul>
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="_index_.html">&quot;index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_types_replacementmap_.html">&quot;types/<wbr>Replacement<wbr>Map&quot;</a>
@@ -264,6 +299,9 @@
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_utils_.html#findlatestversionfromgittags" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="_utils_.html#parsesemverstring" class="tsd-kind-icon">parse<wbr>Semver<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_utils_.html#rewritefilecontentswithreplacement" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacement</a>
