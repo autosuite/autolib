@@ -8,7 +8,7 @@
     "test": "mocha -r ts-node/register **/*.test.ts",
     "coverage": "nyc nyc --reporter=lcov npm test",
     "doc": "typedoc --out docs src",
-    "build": "npm install && tsc && npm run doc",
+    "build": "npm install && tsc && npm run doc && touch docs/.nojekyll",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "repository": {
