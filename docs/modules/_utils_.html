@@ -73,9 +73,8 @@
 						<section class="tsd-index-section ">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#findlatestsemverusingstring" class="tsd-kind-icon">find<wbr>Latest<wbr>Sem<wbr>Ver<wbr>Using<wbr>String</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#findlatestversionfromgittags" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-not-exported"><a href="_utils_.html#parsesemverstring" class="tsd-kind-icon">parse<wbr>Semver<wbr>String</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#findlatestversionfromtext" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Text</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#rewritefilecontentswithreplacement" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacement</a></li>
 								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_utils_.html#rewritefilecontentswithreplacements" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacements</a></li>
 							</ul>
@@ -86,55 +85,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="findlatestsemverusingstring" class="tsd-anchor"></a>
-					<h3>find<wbr>Latest<wbr>Sem<wbr>Ver<wbr>Using<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">find<wbr>Latest<wbr>Sem<wbr>Ver<wbr>Using<wbr>String<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/e5b6e8b/src/utils.ts#L64">utils.ts:64</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Given [string] of newline-delimited tags in text, find the latest tag and return it as <a href="../classes/_types_semver_.semver.html">SemVer</a>.</p>
-								</div>
-								<p>Note the example: <code>1.0.0-rc2 &lt; 1.0.0</code>.</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>text: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the text with tags from which to find the latest SemVer version</p>
-									</div>
-								</li>
-								<li>
-									<h5>stableOnly: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>if the function should ignore all prerelease/build info-appended versions</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>a SemVer representation as a 4-ary [Tuple] of 3 [number]s and 1 optional [string]</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
 					<a name="findlatestversionfromgittags" class="tsd-anchor"></a>
 					<h3>find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags<span class="tsd-signature-symbol">(</span>stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags<span class="tsd-signature-symbol">(</span>stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/e5b6e8b/src/utils.ts#L96">utils.ts:96</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/b7ba008/src/utils.ts#L80">utils.ts:80</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -152,44 +112,33 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-					<a name="parsesemverstring" class="tsd-anchor"></a>
-					<h3>parse<wbr>Semver<wbr>String</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<li class="tsd-signature tsd-kind-icon">parse<wbr>Semver<wbr>String<span class="tsd-signature-symbol">(</span>tag<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a></li>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="findlatestversionfromtext" class="tsd-anchor"></a>
+					<h3>find<wbr>Latest<wbr>Version<wbr>From<wbr>Text</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Text<span class="tsd-signature-symbol">(</span>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, stableOnly<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/e5b6e8b/src/utils.ts#L126">utils.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/b7ba008/src/utils.ts#L55">utils.ts:55</a></li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Parse a string into a <a href="../classes/_types_semver_.semver.html">SemVer</a>.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>tag: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>the potential tag to be parsed</p>
-									</div>
+									<h5>text: <span class="tsd-signature-type">string</span></h5>
 								</li>
 								<li>
 									<h5>stableOnly: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>whether or not only stable versions should be considered</p>
-									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_types_semver_.semver.html" class="tsd-signature-type">SemVer</a></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol">&gt;</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -203,7 +152,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/e5b6e8b/src/utils.ts#L48">utils.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/b7ba008/src/utils.ts#L49">utils.ts:49</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -246,7 +195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/e5b6e8b/src/utils.ts#L16">utils.ts:16</a></li>
+									<li>Defined in <a href="https://github.com/autosuite/autolib/blob/b7ba008/src/utils.ts#L17">utils.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -295,13 +244,10 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_utils_.html#findlatestsemverusingstring" class="tsd-kind-icon">find<wbr>Latest<wbr>Sem<wbr>Ver<wbr>Using<wbr>String</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_utils_.html#findlatestversionfromgittags" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Git<wbr>Tags</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_utils_.html#parsesemverstring" class="tsd-kind-icon">parse<wbr>Semver<wbr>String</a>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_utils_.html#findlatestversionfromtext" class="tsd-kind-icon">find<wbr>Latest<wbr>Version<wbr>From<wbr>Text</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
 						<a href="_utils_.html#rewritefilecontentswithreplacement" class="tsd-kind-icon">rewrite<wbr>File<wbr>Contents<wbr>With<wbr>Replacement</a>

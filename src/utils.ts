@@ -1,10 +1,11 @@
-import fs from 'fs';
+import fs from "fs";
 
-import * as core from '@actions/core';
-import * as exec from '@actions/exec';
+import findMaxSatisfyingSemver from "semver/ranges/max-satisfying";
 
-import { ReplacementMap } from './types/ReplacementMap';
-import { SemVer } from './types/SemVer';
+import * as core from "@actions/core";
+import * as exec from "@actions/exec";
+
+import { ReplacementMap } from "./types/ReplacementMap";
 
 
 /**
@@ -48,41 +49,24 @@ export async function rewriteFileContentsWithReplacements(
 export async function rewriteFileContentsWithReplacement(
     filename: string, matcher: RegExp, replacement: string,
 ): Promise<void> {
-    rewriteFileContentsWithReplacements(filename, [new ReplacementMap(matcher, replacement)]);
+    await rewriteFileContentsWithReplacements(filename, [new ReplacementMap(matcher, replacement)]);
 }
 
+export async function findLatestVersionFromText(text: string, stableOnly: boolean): Promise<string | null> {
+    const cleanedText: string[] = text.trim()
+        .split('\n')
+        .map(text => text.trim());
 
-/**
- * Given [string] of newline-delimited tags in text, find the latest tag and return it as [[SemVer]].
- *
- * Note the example: `1.0.0-rc2 < 1.0.0`.
- *
- * @param text the text with tags from which to find the latest SemVer version
- * @param stableOnly if the function should ignore all prerelease/build info-appended versions
- * @returns a SemVer representation as a 4-ary [Tuple] of 3 [number]s and 1 optional [string]
- */
-export async function findLatestSemVerUsingString(text: string, stableOnly: boolean): Promise<SemVer> {
-    const versionsInText: SemVer[] = text.trim().split('\n')
-        /* Remove surrounding whitespace from all tags. */
-
-        .map((tag: string) => tag.trim())
-
-        /* Convert into SemVer or zeroed "invalid" version. */
-
-        .map((tag: string) => parseSemverString(tag, stableOnly))
-
-        /* Filter out "zeroed" versions. */
-
-        .filter((tag: SemVer) => !tag.isZero());
-
-    const max: SemVer = SemVer.max(versionsInText);
+    const maxVersion: string = findMaxSatisfyingSemver(
+        cleanedText, ">0.0.0", {includePrerelease: !stableOnly}
+    )!;
 
     core.info(
-        `[Autolib] [Result] Of versions: [${versionsInText.join(', ')}], the ${stableOnly ? 'stable max' : 'max'} ` +
-        `was found to be: [${max}].`
+        `[Autolib] [Result] Of versions: [${cleanedText.join(', ')}], the ` +
+        `${stableOnly ? 'stable max' : 'max including pre-releases'} was found to be: [${maxVersion}].`
     );
 
-    return max;
+    return maxVersion;
 }
 
 
@@ -93,53 +77,21 @@ export async function findLatestSemVerUsingString(text: string, stableOnly: bool
  *
  * @param stableOnly whether we should only extract stable versions
  */
-export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise<SemVer> {
-    let text: SemVer | null = null;
-
+export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise<string> {
     try {
         await exec.exec('git fetch --tags');
         await exec.exec('git tag', [], {
             listeners: {
                 stdout: async (data: Buffer) => {
-                    text = await findLatestSemVerUsingString(data.toString(), stableOnly);
+                    return (await findLatestVersionFromText(data.toString(), stableOnly))!;
                 }
             }
         });
     } catch {
-        core.warning('[Autolib] Compliant git tag cannot be found. Returning 0.0.0.');
+        core.warning('[Autolib] Error in fetching a compliant max git tag. Returning [0.0.0].');
     }
 
-    if (!text) {
-        return SemVer.constructZero();
-    }
+    /* Fallthrough: 0.0.0 when no tags are found to be valid. */
 
-    return text;
-}
-
-
-/**
- * Parse a string into a [[SemVer]].
- *
- * @param tag the potential tag to be parsed
- * @param stableOnly whether or not only stable versions should be considered
- */
-function parseSemverString(tag: string, stableOnly: boolean): SemVer {
-    try {
-        const candidate: SemVer = SemVer.constructFromText(tag);
-
-        if (stableOnly && candidate.info) {
-            /* If in "stable-only" mode, versions with info strings are invalid. */
-
-            core.info(`[Autolib] [Parse] ${tag} is valid SemVer but it's not stable and this is stable mode.`);
-
-            return SemVer.constructZero();
-        }
-        core.info(`[Autolib] [Parse] ${tag} is valid SemVer! Nice.`);
-
-        return candidate;
-    } catch {
-        core.info(`[Autolib] [Parse] ${tag} is invalid SemVer.`);
-
-        return SemVer.constructZero();
-    }
+    return "0.0.0";
 }

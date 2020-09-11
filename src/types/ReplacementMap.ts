@@ -1,4 +1,5 @@
-/** A [RegExp] to [string] replacement map for use on a file. */
+/** A {@link RegExp} to `string` replacement map for use on a file. */
+
 export class ReplacementMap {
     /** The regular expression to match and replace. */
     matcher: RegExp;

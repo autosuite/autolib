@@ -16,16 +16,16 @@ export const SEMVER_REGEXP = /v?(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)(?<in
 /** A basic concrete representation of a Semantic Version. */
 export class SemVer {
     /** The major version, immutable. */
-    private _major: number;
+    readonly _major: number;
 
     /** The minor number, immutable. */
-    private _minor: number;
+    readonly _minor: number;
 
     /** The patch number, immutable. */
-    private _patch: number;
+    readonly _patch: number;
 
     /** The information string, if applicable, immutable. */
-    private _info: string | null;
+    readonly _info: string | null;
 
     get major(): number {
         return this._major;
