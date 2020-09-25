@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 
-import { findLatestVersionFromText } from '../utils';
+import { findLatestVersionFromText } from '..';
 
 
 describe('findLatestVersionFromText (nominal)', () => {
