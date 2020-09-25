@@ -1,7 +1,7 @@
-import findMaxSatisfyingSemver from "semver/ranges/max-satisfying";
-
 import * as core from "@actions/core";
 import * as exec from "@actions/exec";
+
+import findMaxSatisfyingSemver from "semver/ranges/max-satisfying";
 
 
 export async function findLatestVersionFromText(text: string, stableOnly: boolean): Promise<string | null> {
@@ -31,6 +31,7 @@ export async function findLatestVersionFromText(text: string, stableOnly: boolea
 }
 
 
+// noinspection JSUnusedGlobalSymbols
 /**
  * Using `git` tags, find the latest version (if this is possible).
  *
@@ -38,7 +39,7 @@ export async function findLatestVersionFromText(text: string, stableOnly: boolea
  *
  * @param stableOnly whether we should only extract stable versions
  */
-export default async function findLatestVersionFromGitTags(stableOnly: boolean): Promise<string> {
+export async function findLatestVersionFromGitTags(stableOnly: boolean): Promise<string> {
     let latestVersion: string | null = null;
 
     await exec.exec('git fetch --tags');
